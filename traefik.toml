@@ -1,0 +1,38 @@
+debug = false
+
+logLevel = "ERROR"
+defaultEntryPoints = ["https","http"]
+
+[web]
+address = ":8080"
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+    regex = "^http://www.syncify.me/(.*)"
+    replacement = "https://www.syncify.me/$1"
+  [entryPoints.https]
+  address = ":443"
+  [entryPoints.https.tls]
+
+[retry]
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "syncify.me"
+watch = true
+exposedbydefault = false
+
+[acme]
+email = "pandey.adarsh147@gmail.com"
+storage = "acme.json"
+entryPoint = "https"
+onHostRule = true
+onDemand = false
+[[acme.domains]]
+  main = "syncify.me"
+  sans = ["www.syncify.me", "monitor.syncify.me"]
+[acme.httpChallenge]
+entryPoint = "http"
