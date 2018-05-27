@@ -27,7 +27,7 @@ services:
     restart: always
     ports:
       - 5000:5000
-    valumes:
+    volumes:
       - /opt/registry:/var/lib/registry
     labels:
       - "traefik.enabled=true"
