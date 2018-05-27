@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+  
+  new-api:
+    image: docker.syncify.me/news-api:latest
+    restart: always
+    ports:
+      - 5333:8080
+    networks: 
+      - web
+    labels:
+      - "traefik.enabled=true"
+      - "traefik.backend=registry"
+      - "traefik.frontend.rule=Host:www.syncify.me"
+      - "traefik.port=5333"
+
+networks:
+  web:
+    external: true
