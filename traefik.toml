@@ -1,7 +1,15 @@
 debug = false
 
-logLevel = "ERROR"
+logLevel = "INFO"
 defaultEntryPoints = ["https","http"]
+
+[traefikLog]
+  filePath = "/var/log/traefik.log"
+  format   = "json"
+
+[accessLog]
+  filePath = "/var/log/access.log"
+  format = "json"
 
 [web]
 address = ":8080"
