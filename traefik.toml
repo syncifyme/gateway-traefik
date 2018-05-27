@@ -33,6 +33,6 @@ onHostRule = true
 onDemand = false
 [[acme.domains]]
   main = "syncify.me"
-  sans = ["www.syncify.me", "monitor.syncify.me"]
+  sans = ["www.syncify.me", "monitor.syncify.me", "docker.syncify.com"]
 [acme.httpChallenge]
 entryPoint = "http"
