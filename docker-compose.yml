@@ -22,6 +22,19 @@ services:
       - "traefik.port=8080"
     container_name: traefik
 
+  docker-registry:
+    image: registry:2
+    restart: always
+    ports:
+      - 5000:5000
+    valumes:
+      - /opt/registry:/var/lib/registry
+    labels:
+      - "traefik.enabled=true"
+      - "traefik.backend=registry"
+      - "traefik.frontend.rule=Host:docker.syncify.me"
+      - "traefik.port=5000"
+
 networks:
   web:
     external: true
