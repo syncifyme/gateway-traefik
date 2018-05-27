@@ -11,7 +11,7 @@ services:
       - web
     labels:
       - "traefik.enabled=true"
-      - "traefik.backend=registry"
+      - "traefik.backend=new-api"
       - "traefik.frontend.rule=Host:www.syncify.me"
       - "traefik.port=5333"
 
