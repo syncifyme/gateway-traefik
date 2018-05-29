@@ -4,7 +4,6 @@ services:
   traefik:
     image: traefik:1.6.2
     command: --web --docker
-    restart: always
     ports:
       - 80:80
       - 443:443
@@ -23,11 +22,12 @@ services:
         - "traefik.backend=dashboard"
         - "traefik.frontend.rule=Host:monitor.syncify.me"
         - "traefik.port=8080"
+      restart_policy:
+        condition: on-failure
     container_name: traefik
 
   docker-registry:
     image: registry:2
-    restart: always
     depends_on:
       - traefik
     networks:
@@ -40,10 +40,11 @@ services:
         - "traefik.backend=registry"
         - "traefik.frontend.rule=Host:docker.syncify.me"
         - "traefik.port=5000"
+      restart_policy:
+        condition: on-failure
 
   new-api:
       image: docker.syncify.me/news-api:latest
-      restart: always
       networks: 
         - web
       deploy:
@@ -52,7 +53,9 @@ services:
           - "traefik.backend=new-api"
           - "traefik.frontend.rule=Host:www.syncify.me"
           - "traefik.port=8080"
+        restart_policy:
+          condition: on-failure
 
 networks:
   web:
-    external: true
+    driver: overlay
