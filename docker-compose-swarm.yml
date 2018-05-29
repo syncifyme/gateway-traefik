@@ -59,3 +59,7 @@ services:
 networks:
   web:
     driver: overlay
+
+configs:
+  traefik-config:
+    file: traefik.toml
