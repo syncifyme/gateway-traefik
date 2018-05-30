@@ -24,7 +24,6 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-    container_name: traefik
 
   docker-registry:
     image: registry:2
