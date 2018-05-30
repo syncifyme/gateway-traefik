@@ -1,6 +1,6 @@
 debug = false
 
-logLevel = "INFO"
+logLevel = "DEBUG"
 defaultEntryPoints = ["https","http"]
 
 [traefikLog]
