@@ -3,7 +3,7 @@ version: '3.3'
 services:
   traefik:
     image: traefik:1.6.2
-    command: --web --docker --docker.domain=docker.localhost --logLevel=DEBUG
+    command: --web --docker --logLevel=DEBUG
     ports:
       - 80:80
       - 443:443
@@ -16,14 +16,15 @@ services:
       - /opt/traefik/acme.json:/acme.json
       - /var/log/traefik.log:/var/log/traefik.log
       - /var/log/access.log:/var/log/access.log
-    labels:
-      - "traefik.enabled=true"
-      - "traefik.backend=dashboard"
-      - "traefik.frontend.rule=Host:monitor.syncify.me"
-      - "traefik.port=8080"
     deploy:
+      replicas: 1
+      labels:
+        - "traefik.enabled=true"
+        - "traefik.backend=dashboard"
+        - "traefik.frontend.rule=Host:monitor.syncify.me"
+        - "traefik.port=8080"
       restart_policy:
-        condition: on-failure
+        condition: any
       placement:
         constraints:
           - node.role == manager
@@ -43,7 +44,7 @@ services:
       - "traefik.port=5000"
     deploy:
       restart_policy:
-        condition: on-failure
+        condition: any
 
   new-api:
       image: docker.syncify.me/news-api:latest
@@ -56,7 +57,7 @@ services:
         - "traefik.port=8080"
       deploy:
         restart_policy:
-          condition: on-failure
+          condition: any
 
 networks:
   web:
