@@ -1,9 +1,9 @@
-version: '3.3'
+version: '3'
 
 services:
   traefik:
     image: traefik:1.6.2
-    command: --web --docker --logLevel=DEBUG
+    command: --web --docker
     ports:
       - 80:80
       - 443:443
@@ -16,13 +16,12 @@ services:
       - /opt/traefik/acme.json:/acme.json
       - /var/log/traefik.log:/var/log/traefik.log
       - /var/log/access.log:/var/log/access.log
+    labels:
+      - "traefik.enabled=true"
+      - "traefik.backend=dashboard"
+      - "traefik.frontend.rule=Host:monitor.syncify.me"
+      - "traefik.port=8080"
     deploy:
-      replicas: 1
-      labels:
-        - "traefik.enabled=true"
-        - "traefik.backend=dashboard"
-        - "traefik.frontend.rule=Host:monitor.syncify.me"
-        - "traefik.port=8080"
       restart_policy:
         condition: any
       placement:
