@@ -1,20 +1,33 @@
-version: '2'
+version: '3'
 
 services:
-  
-  new-api:
-    image: docker.syncify.me/news-api:latest
-    restart: always
+  traefik:
+    image: traefik:1.6.2
+    command: --web --docker
     ports:
-      - 5333:8080
-    networks: 
+      - 80:80
+      - 443:443
+      - 8080:8080
+    networks:
       - web
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/traefik/traefik.toml:/traefik.toml
+      - /opt/traefik/acme.json:/acme.json
+      - /var/log/traefik.log:/var/log/traefik.log
+      - /var/log/access.log:/var/log/access.log
     labels:
       - "traefik.enabled=true"
-      - "traefik.backend=new-api"
-      - "traefik.frontend.rule=Host:www.syncify.me"
-      - "traefik.port=5333"
+      - "traefik.backend=dashboard"
+      - "traefik.frontend.rule=Host:monitor.syncify.me"
+      - "traefik.port=8080"
+    deploy:
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.role == manager
 
 networks:
   web:
-    external: true
+    driver: overlay
