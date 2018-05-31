@@ -10,6 +10,7 @@ services:
       - 8080:8080
     networks:
       - web
+      - traefik
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/traefik/traefik.toml:/traefik.toml
@@ -32,3 +33,5 @@ networks:
   web:
     driver: overlay
     external: true
+  traefik:
+    driver: overlay
