@@ -9,8 +9,7 @@ services:
       - 443:443
       - 8080:8080
     networks:
-      - web
-      - traefik
+      - gateway
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/traefik/traefik.toml:/traefik.toml
@@ -30,8 +29,7 @@ services:
           - node.role == manager
 
 networks:
-  web:
+  gateway:
     driver: overlay
     external: true
-  traefik:
-    driver: overlay
+
