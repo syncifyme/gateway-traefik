@@ -1,34 +1,36 @@
-version: '3'
+version: "3"
 
 services:
-  traefik:
-    image: prom/prometheus
-    command: --docker --api
-    ports:
-      - 80:80
-      - 443:443
-      - 8080:8080
-    networks:
-      - gateway
+  prom:
+    image: quay.io/prometheus/prometheus:v2.0.0
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /opt/traefik/traefik.toml:/traefik.toml
-      - /opt/traefik/acme.json:/acme.json
-      - /var/log/traefik.log:/var/log/traefik.log
-      - /var/log/access.log:/var/log/access.log
+     - /opt/traefik/prometheus.yml:/etc/prometheus/prometheus.yml
+    command: "--config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus"
+    labels:
+        - "traefik.enabled=true"
+        - "traefik.backend=promeheus-prom"
+        - "traefik.frontend.rule=Host:monitor.syncify.me;PathPrefix:/docker-monitor"
+        - "traefik.port=9090"
+      deploy:
+        restart_policy:
+          condition: any
+    
+    depends_on:
+     - exporter
+  exporter:
+    image: prom/node-exporter:latest
+    ports:
+     - "9100:9100"
+#    network_mode: host
+  grafana:
+    image: grafana/grafana
     labels:
       - "traefik.enabled=true"
-      - "traefik.backend=dashboard"
-      - "traefik.frontend.rule=Host:monitor.syncify.me"
-      - "traefik.port=8080"
+      - "traefik.backend=promeheus-prom"
+      - "traefik.frontend.rule=Host:monitor.syncify.me;PathPrefix:/grafana-monitor"
+      - "traefik.port=3000"
     deploy:
       restart_policy:
         condition: any
-      placement:
-        constraints:
-          - node.role == manager
-
-networks:
-  gateway:
-    driver: overlay
-    external: true
+    depends_on:
+      - prom
