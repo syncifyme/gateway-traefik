@@ -8,7 +8,7 @@ services:
     command: "--config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus"
     labels:
         - "traefik.enabled=true"
-        - "traefik.backend=promeheus-prom"
+        - "traefik.backend=prometheus-prom"
         - "traefik.frontend.rule=Host:monitor.syncify.me;PathPrefix:/docker-monitor"
         - "traefik.port=9090"
       deploy:
@@ -26,7 +26,7 @@ services:
     image: grafana/grafana
     labels:
       - "traefik.enabled=true"
-      - "traefik.backend=promeheus-prom"
+      - "traefik.backend=prometheus-grafana"
       - "traefik.frontend.rule=Host:monitor.syncify.me;PathPrefix:/grafana-monitor"
       - "traefik.port=3000"
     deploy:
