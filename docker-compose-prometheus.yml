@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  traefik:
+    image: prom/prometheus
+    command: --docker --api
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    networks:
+      - gateway
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/traefik/traefik.toml:/traefik.toml
+      - /opt/traefik/acme.json:/acme.json
+      - /var/log/traefik.log:/var/log/traefik.log
+      - /var/log/access.log:/var/log/access.log
+    labels:
+      - "traefik.enabled=true"
+      - "traefik.backend=dashboard"
+      - "traefik.frontend.rule=Host:monitor.syncify.me"
+      - "traefik.port=8080"
+    deploy:
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.role == manager
+
+networks:
+  gateway:
+    driver: overlay
+    external: true
