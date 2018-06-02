@@ -11,12 +11,13 @@ services:
     networks:
       - gateway
     labels:
-        - "traefik.enabled=true"
-        - "traefik.backend=prometheus-prom"
-        - "traefik.frontend.rule=Host:monitor.syncify.me;PathPrefix:/docker-monitor"
-      deploy:
-        restart_policy:
-          condition: any
+      - "traefik.enabled=true"
+      - "traefik.backend=prometheus-prom"
+      - "traefik.frontend.rule=Host:monitor.syncify.me;PathPrefix:/docker-monitor"
+      - "traefik.port=9090"
+    deploy:
+      restart_policy:
+        condition: any
     
     depends_on:
       - exporter
