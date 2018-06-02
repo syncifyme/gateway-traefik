@@ -13,7 +13,7 @@ services:
     labels:
       - "traefik.enabled=true"
       - "traefik.backend=prometheus-prom"
-      - "traefik.frontend.rule=Host:monitor.syncify.me;PathPrefix:/docker-monitor"
+      - "traefik.frontend.rule=Host:monitor.syncify.me;PathPrefixStrip:/docker-monitor"
       - "traefik.port=9090"
     deploy:
       restart_policy:
@@ -34,7 +34,7 @@ services:
     labels:
       - "traefik.enabled=true"
       - "traefik.backend=prometheus-grafana"
-      - "traefik.frontend.rule=Host:monitor.syncify.me;PathPrefix:/grafana-monitor"
+      - "traefik.frontend.rule=Host:monitor.syncify.me;PathPrefixStrip:/grafana-monitor"
       - "traefik.port=3000"
     deploy:
       restart_policy:
