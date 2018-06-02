@@ -11,9 +11,8 @@ defaultEntryPoints = ["https","http"]
   filePath = "/var/log/access.log"
   format = "json"
 
-[api]
-  entryPoint = "traefikMonitor"
-  dashboard = true
+[web]
+address = ":8080"
 
 [entryPoints]
   [entryPoints.http]
@@ -25,9 +24,6 @@ defaultEntryPoints = ["https","http"]
   [entryPoints.https]
   address = ":443"
   [entryPoints.https.tls]
-
-  [entryPoints.traefikMonitor]
-  address = ":8080"
 
 [retry]
 
