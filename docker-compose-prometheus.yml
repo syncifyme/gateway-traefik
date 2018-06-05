@@ -13,7 +13,7 @@ services:
     labels:
       - "traefik.enabled=true"
       - "traefik.backend=prometheus-prom"
-      - "traefik.frontend.rule=Host:monitor.syncify.me;PathPrefixStrip:/docker-monitor"
+      - "traefik.frontend.rule=Host:docker.syncify.me"
       - "traefik.port=9090"
     deploy:
       restart_policy:
